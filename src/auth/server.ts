@@ -112,7 +112,7 @@ export class AuthServer {
               <div class="container">
                   <h1>Authentication Failed</h1>
                   <p>An error occurred during authentication:</p>
-                  <p><code>${message}</code></p>
+                  <p><code>${message.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;')}</code></p>
                   <p>Please try again or check the server logs.</p>
               </div>
           </body>
@@ -175,7 +175,7 @@ export class AuthServer {
       try {
         await new Promise<void>((resolve, reject) => {
           // Create a temporary server instance to test the port
-          const testServer = this.app.listen(port, () => {
+          const testServer = this.app.listen(port, '127.0.0.1', () => {
             this.server = testServer; // Assign to class property *only* if successful
             console.error(`Authentication server listening on http://localhost:${port}`);
             resolve();
